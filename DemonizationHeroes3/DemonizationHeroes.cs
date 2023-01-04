@@ -8,6 +8,7 @@ namespace DemonizationHeroes3
 {
     class DemonizationHeroes
     {
+        private static DemonizationHeroes CountClass;
         private const int demonsHP = 35;
         private const int limitationDaemonie = 50;
         private int _amountPitLord; // количество пит лордов
@@ -25,13 +26,7 @@ namespace DemonizationHeroes3
         {
             _amountPitLord = AmountPitLord;
             _creaturesHP = CreaturesHP;
-            _demonPowerHP = DemonPowerHP(_amountPitLord);
-            _creaturesSummoned = CreaturesSummoned (_demonPowerHP);
-            _neededHP = NeededHP(_creaturesSummoned);
-            _necessaryCreatures = NecessaryCreatures();
-            _creaturesLostHP = CreaturesLostHP(_necessaryCreatures, _demonPowerHP);
-            _lostPitLordPuwer = LostPitLordPuwer(_amountPitLord, _creaturesSummoned);
-            message = CreateText();
+            inicializashion();
         }
 
         public static DemonizationHeroes Create (int AmountPitLord, int CreaturesHP)
@@ -41,7 +36,43 @@ namespace DemonizationHeroes3
                 throw new ArgumentOutOfRangeException("the input value must not be less than one");
             }
 
-            return new DemonizationHeroes(AmountPitLord, CreaturesHP);
+            if (CountClass == null)
+            {
+                CountClass = new DemonizationHeroes(AmountPitLord, CreaturesHP);
+            }
+
+            else
+            {
+                CountClass._amountPitLord = AmountPitLord;
+                CountClass._creaturesHP = CreaturesHP;
+                CountClass.inicializashion();
+            }
+
+            return CountClass;
+
+            //if (AmountPitLord < 0 && CreaturesHP < 0)
+            //{
+            //    throw new ArgumentOutOfRangeException("the input value must not be less than one");
+            //}
+
+            //return new DemonizationHeroes(AmountPitLord, CreaturesHP);
+        }
+
+        private void inicializashion()
+        {
+            _demonPowerHP = DemonPowerHP(_amountPitLord);
+            _creaturesSummoned = CreaturesSummoned(_demonPowerHP);
+            _neededHP = NeededHP(_creaturesSummoned);
+            _necessaryCreatures = NecessaryCreatures();
+            _creaturesLostHP = CreaturesLostHP(_necessaryCreatures, _demonPowerHP);
+            _lostPitLordPuwer = LostPitLordPuwer(_amountPitLord, _creaturesSummoned);
+            message = CreateText();
+        }
+
+        public void chengValue (int AmountPitLord, int CreaturesHP)
+        {
+            _amountPitLord = AmountPitLord;
+            _creaturesHP = CreaturesHP;
         }
 
         private int DemonPowerHP(int amountPitLord)
